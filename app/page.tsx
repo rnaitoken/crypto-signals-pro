@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { TrendingUp, Shield, Users, Zap, ArrowRight, ChevronRight, Star, Activity, Globe, Lock, BarChart2, Cpu, Database, LineChart } from 'lucide-react'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 function AnimatedCounter({ target, suffix = '' }: { target: string; suffix?: string }) {
   const [count, setCount] = useState('0')
@@ -20,13 +21,120 @@ function AnimatedCounter({ target, suffix = '' }: { target: string; suffix?: str
   return <span>{count}{suffix}</span>
 }
 
+const t = {
+  es: {
+    systemActive: 'Sistema activo',
+    hello: 'Hola',
+    vip: 'VIP',
+    free: 'FREE',
+    startFree: 'Empezar gratis',
+    viewLiveSignals: 'Ver señales en vivo',
+    profitability2026: '+127% de rentabilidad en 2026',
+    freeSignals: '3 señales/semana gratis',
+    noCard: 'Sin tarjeta',
+    noCommitment: 'Sin compromiso',
+    activeMembers: 'Miembros activos',
+    signalsSent: 'Señales enviadas',
+    winRateLabel: 'Win rate',
+    howWorks: 'CÓMO FUNCIONA',
+    zeroToProfits: 'De 0 a profits en 3 pasos',
+    connectWallet: 'Conecta tu wallet',
+    connectWalletDesc: 'Usa tu API de Bybit o Binance. Solo permisos de trading — jamás tocamos tu dinero directamente.',
+    receiveSignals: 'Recibe señales',
+    receiveSignalsDesc: 'Nuestras señales con IA llegan a tu Telegram con entrada, stop loss y take profit exactos.',
+    earnMoney: 'Gana dinero',
+    earnMoneyDesc: 'Seguimos tu rentabilidad. Si ganas >5%, cobramos nuestra comisión. Si pierdes, no pagas nada.',
+    whyUs: 'POR QUÉ NOSOTROS',
+    advantage: 'La ventaja CryptoSignalsPro',
+    performanceFee: 'Performance Fee real',
+    performanceFeeDesc: 'Solo cobramos el 30% cuando ganas más del 5%. Si nuestra señal falla, no cobramos nada.',
+    aiProprietary: 'IA propietaria',
+    aiProprietaryDesc: 'Modelos entrenados con datos de mercado de los últimos 5 años. No copy-paste de señales públicas.',
+    twentyFourSeven: '24/7 en Telegram',
+    twentyFourSevenDesc: 'Señales en tiempo real, análisis diario y soporte directo en tu móvil. Sin apps, sin complicaciones.',
+    auditableHistory: 'Historial auditable',
+    auditableHistoryDesc: 'Cada señal queda registrada. Puedes verificar cada operación y su resultado en tu dashboard.',
+    advancedDashboard: 'Dashboard avanzado',
+    advancedDashboardDesc: 'Tu panel personal con estadísticas, rendimiento, referidos y evolución de tu wallet.',
+    vipCommunity: 'Comunidad VIP',
+    vipCommunityDesc: 'Acceso a grupo privado con traders exitosos. Comparte estrategias y aprende de los mejores.',
+    liveSignals: 'EN VIVO',
+    latestSignals: 'Últimas señales',
+    viewAll: 'Ver todas',
+    openFreeAccount: 'Empezar ahora',
+    openFreeAccount2: 'Empieza a ganar hoy',
+    onlyWinFee: '3 señales/semana gratis. Sin tarjeta. Sin compromiso. Si no ganas, no pagas.',
+    allRights: '© 2026 CryptoSignalsPro. Todos los derechos reservados.',
+    login: 'Login',
+    signals: 'Señales',
+    features: 'Features',
+    pricing: 'Pricing',
+    live: 'Live',
+  },
+  en: {
+    systemActive: 'System active',
+    hello: 'Hello',
+    vip: 'VIP',
+    free: 'FREE',
+    startFree: 'Start free',
+    viewLiveSignals: 'View live signals',
+    profitability2026: '+127% profitability in 2026',
+    freeSignals: '3 signals/week free',
+    noCard: 'No card required',
+    noCommitment: 'No commitment',
+    activeMembers: 'Active members',
+    signalsSent: 'Signals sent',
+    winRateLabel: 'Win rate',
+    howWorks: 'HOW IT WORKS',
+    zeroToProfits: 'From 0 to profits in 3 steps',
+    connectWallet: 'Connect your wallet',
+    connectWalletDesc: 'Use your Bybit or Binance API. Trading permissions only — we never touch your money directly.',
+    receiveSignals: 'Receive signals',
+    receiveSignalsDesc: 'Our AI signals arrive on your Telegram with entry, stop loss and exact take profit targets.',
+    earnMoney: 'Earn money',
+    earnMoneyDesc: 'We track your profitability. If you earn >5%, we charge our commission. If you lose, you pay nothing.',
+    whyUs: 'WHY US',
+    advantage: 'The CryptoSignalsPro advantage',
+    performanceFee: 'Real Performance Fee',
+    performanceFeeDesc: 'We only charge 30% when you earn more than 5%. If our signal fails, we charge nothing.',
+    aiProprietary: 'Proprietary AI',
+    aiProprietaryDesc: 'Models trained with 5 years of market data. Not copy-paste from public signals.',
+    twentyFourSeven: '24/7 on Telegram',
+    twentyFourSevenDesc: 'Real-time signals, daily analysis and direct support on your mobile. No apps, no complications.',
+    auditableHistory: 'Auditable history',
+    auditableHistoryDesc: 'Every signal is recorded. You can verify each operation and its result on your dashboard.',
+    advancedDashboard: 'Advanced Dashboard',
+    advancedDashboardDesc: 'Your personal panel with statistics, performance, affiliates and wallet evolution.',
+    vipCommunity: 'VIP Community',
+    vipCommunityDesc: 'Access to private group with successful traders. Share strategies and learn from the best.',
+    liveSignals: 'LIVE',
+    latestSignals: 'Latest signals',
+    viewAll: 'View all',
+    openFreeAccount: 'Start now',
+    openFreeAccount2: 'Start earning today',
+    onlyWinFee: '3 signals/week free. No card. No commitment. If you don\'t win, you don\'t pay.',
+    allRights: '© 2026 CryptoSignalsPro. All rights reserved.',
+    login: 'Login',
+    signals: 'Signals',
+    features: 'Features',
+    pricing: 'Pricing',
+    live: 'Live',
+  },
+}
+
 export default function Home() {
+  const [lang, setLang] = useState('es')
   const [visible, setVisible] = useState(false)
-  useEffect(() => { setTimeout(() => setVisible(true), 100) }, [])
+  useEffect(() => {
+    const stored = localStorage.getItem('lang') || 'es'
+    setLang(stored)
+    setTimeout(() => setVisible(true), 100)
+  }, [])
+
+  const tx = t[lang as 'es' | 'en'] || t.es
 
   return (
     <div className="min-h-screen bg-[#030712] text-white overflow-x-hidden">
-      {/* Background effects */}
       <div className="fixed inset-0 bg-grid opacity-100 pointer-events-none" />
       <div className="fixed inset-0 bg-gradient-to-b from-transparent via-[#030712]/50 to-[#030712] pointer-events-none" />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#00ff88]/5 rounded-full blur-[120px] pointer-events-none" />
@@ -46,16 +154,17 @@ export default function Home() {
               <div className="text-[10px] text-[#00ff88]/60 tracking-widest uppercase">AI Powered Trading</div>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm text-gray-400 hover:text-white transition">Features</a>
-            <a href="#signals" className="text-sm text-gray-400 hover:text-white transition">Señales</a>
-            <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition">Pricing</a>
-            <a href="/senales" className="text-sm text-gray-400 hover:text-white transition">Live</a>
+          <div className="hidden md:flex items-center gap-6">
+            <a href="#features" className="text-sm text-gray-400 hover:text-white transition">{tx.features}</a>
+            <a href="#signals" className="text-sm text-gray-400 hover:text-white transition">{tx.signals}</a>
+            <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition">{tx.pricing}</a>
+            <a href="/senales" className="text-sm text-gray-400 hover:text-white transition">{tx.live}</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="hidden sm:block text-sm text-gray-400 hover:text-white transition">Login</Link>
+            <LanguageSwitcher />
+            <Link href="/login" className="hidden sm:block text-sm text-gray-400 hover:text-white transition">{tx.login}</Link>
             <Link href="/login" className="btn-primary text-sm !py-3 !px-6 flex items-center gap-2">
-              Empezar <ArrowRight className="w-4 h-4" />
+              {tx.startFree} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -68,36 +177,36 @@ export default function Home() {
           <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
             <div className="badge-tech inline-flex items-center gap-2 mb-8">
               <span className="w-2 h-2 bg-[#00ff88] rounded-full animate-pulse" />
-              Sistema activo y operando
+              {tx.profitability2026}
             </div>
           </div>
 
           <h1 className={`font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
-            <span className="text-gradient-green">Señales de Trading</span>
+            <span className="text-gradient-green">{tx.aiTrading || 'Señales de Trading'}</span>
             <br />
-            <span className="text-white">con Inteligencia</span>
+            <span className="text-white">{tx.artificialIntelligence || 'con Inteligencia'}</span>
             <br />
             <span className="text-gradient-green">Artificial</span>
           </h1>
 
           <p className={`text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
-            El único servicio donde <span className="text-[#00ff88] font-semibold">cobramos solo si tú ganas</span>.
-            +127% de rentabilidad verificada. Sin promesas, sin humo.
+            {lang === 'es'
+              ? <>El único servicio donde <span className="text-[#00ff88] font-semibold">cobramos solo si tú ganas</span>. +127% de rentabilidad verificada. Sin promesas, sin humo.</>
+              : <>The only service where <span className="text-[#00ff88] font-semibold">we only charge if you win</span>. +127% verified profitability. No promises, no BS.</>
+            }
           </p>
 
           <div className={`flex items-center justify-center gap-4 flex-wrap transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '800ms' }}>
             <Link href="/login" className="btn-primary text-base flex items-center gap-2 animate-pulse-glow">
-              Empezar gratis <ArrowRight className="w-5 h-5" />
+              {tx.startFree} <ArrowRight className="w-5 h-5" />
             </Link>
             <Link href="/senales" className="btn-secondary text-base flex items-center gap-2">
-              Ver señales en vivo
+              {tx.viewLiveSignals}
             </Link>
           </div>
 
-          <p className="text-xs text-gray-600 mt-4">3 señales/semana gratis • Sin tarjeta • Sin compromiso</p>
+          <p className="text-xs text-gray-600 mt-4">{tx.freeSignals} • {tx.noCard} • {tx.noCommitment}</p>
         </div>
-
-        {/* Hero visual element */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00ff88]/20 to-transparent" />
       </section>
 
@@ -106,10 +215,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { value: '2,847', label: 'Miembros activos', icon: <Users className="w-5 h-5" /> },
-              { value: '+127%', label: 'Rentabilidad 2026', icon: <LineChart className="w-5 h-5" /> },
-              { value: '1,342', label: 'Señales enviadas', icon: <Activity className="w-5 h-5" /> },
-              { value: '96.2%', label: 'Win rate', icon: <BarChart2 className="w-5 h-5" /> },
+              { value: '2,847', label: tx.activeMembers, icon: <Users className="w-5 h-5" /> },
+              { value: '+127%', label: tx.profitability2026, icon: <LineChart className="w-5 h-5" /> },
+              { value: '1,342', label: tx.signalsSent, icon: <Activity className="w-5 h-5" /> },
+              { value: '96.2%', label: tx.winRateLabel, icon: <BarChart2 className="w-5 h-5" /> },
             ].map((stat, i) => (
               <div key={i} className="text-center group">
                 <div className="text-3xl md:text-4xl font-black font-display text-white mb-1">
@@ -126,31 +235,16 @@ export default function Home() {
       <section className="relative py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="badge-tech inline-flex items-center gap-2 mb-4">CÓMO FUNCIONA</div>
+            <div className="badge-tech inline-flex items-center gap-2 mb-4">{tx.howWorks}</div>
             <h2 className="font-display text-4xl md:text-5xl font-black mt-4">
-              De <span className="text-gradient-green">0 a profits</span> en 3 pasos
+              {tx.zeroToProfits}
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              {
-                step: '01',
-                icon: <Lock className="w-7 h-7" />,
-                title: 'Conecta tu wallet',
-                desc: 'Usa tu API de Bybit o Binance. Solo permisos de trading — jamás tocamos tu dinero directamente.',
-              },
-              {
-                step: '02',
-                icon: <Zap className="w-7 h-7" />,
-                title: 'Recibe señales',
-                desc: 'Nuestras señales con IA llegan a tu Telegram con entrada, stop loss y take profit exactos.',
-              },
-              {
-                step: '03',
-                icon: <TrendingUp className="w-7 h-7" />,
-                title: 'Gana dinero',
-                desc: 'Seguimos tu rentabilidad. Si ganas >5%, cobramos nuestra comisión. Si pierdes, no pagas nada.',
-              },
+              { step: '01', icon: <Lock className="w-7 h-7" />, title: tx.connectWallet, desc: tx.connectWalletDesc },
+              { step: '02', icon: <Zap className="w-7 h-7" />, title: tx.receiveSignals, desc: tx.receiveSignalsDesc },
+              { step: '03', icon: <TrendingUp className="w-7 h-7" />, title: tx.earnMoney, desc: tx.earnMoneyDesc },
             ].map((item, i) => (
               <div key={i} className="card-tech glass-accent rounded-2xl p-8 relative">
                 <div className="text-6xl font-black text-[#00ff88]/10 font-display absolute top-4 right-6">{item.step}</div>
@@ -167,19 +261,19 @@ export default function Home() {
       <section id="features" className="relative py-24 bg-[#0a1628]/30">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <div className="badge-tech inline-flex items-center gap-2 mb-4">POR QUÉ NOSOTROS</div>
+            <div className="badge-tech inline-flex items-center gap-2 mb-4">{tx.whyUs}</div>
             <h2 className="font-display text-4xl md:text-5xl font-black mt-4">
-              La <span className="text-gradient-green">ventaja</span> CryptoSignalsPro
+              {tx.advantage}
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: <Shield className="w-6 h-6" />, title: 'Performance Fee real', desc: 'Solo cobramos el 30% cuando ganas más del 5%. Si nuestra señal falla, no cobramos nada.' },
-              { icon: <Cpu className="w-6 h-6" />, title: 'IA propietaria', desc: 'Modelos entrenados con datos de mercado de los últimos 5 años. No copy-paste de señales públicas.' },
-              { icon: <Globe className="w-6 h-6" />, title: '24/7 en Telegram', desc: 'Señales en tiempo real, análisis diario y soporte directo en tu móvil. Sin apps, sin complicaciones.' },
-              { icon: <Database className="w-6 h-6" />, title: 'Historial auditable', desc: 'Cada señal queda registrada. Puedes verificar cada operación y su resultado en tu dashboard.' },
-              { icon: <BarChart2 className="w-6 h-6" />, title: 'Dashboard avanzado', desc: 'Tu panel personal con estadísticas, rendimiento, referidos y evolución de tu wallet.' },
-              { icon: <Star className="w-6 h-6" />, title: 'Comunidad VIP', desc: 'Acceso a grupo privado con traders exitosos. Comparte estrategias y aprende de los mejores.' },
+              { icon: <Shield className="w-6 h-6" />, title: tx.performanceFee, desc: tx.performanceFeeDesc },
+              { icon: <Cpu className="w-6 h-6" />, title: tx.aiProprietary, desc: tx.aiProprietaryDesc },
+              { icon: <Globe className="w-6 h-6" />, title: tx.twentyFourSeven, desc: tx.twentyFourSevenDesc },
+              { icon: <Database className="w-6 h-6" />, title: tx.auditableHistory, desc: tx.auditableHistoryDesc },
+              { icon: <BarChart2 className="w-6 h-6" />, title: tx.advancedDashboard, desc: tx.advancedDashboardDesc },
+              { icon: <Star className="w-6 h-6" />, title: tx.vipCommunity, desc: tx.vipCommunityDesc },
             ].map((f, i) => (
               <div key={i} className="card-tech glass rounded-xl p-6 hover:border-[rgba(0,255,136,0.3)] transition-all">
                 <div className="text-[#00ff88] mb-4">{f.icon}</div>
@@ -198,12 +292,12 @@ export default function Home() {
             <div>
               <div className="badge-tech inline-flex items-center gap-2 mb-4">
                 <span className="w-2 h-2 bg-[#00ff88] rounded-full animate-pulse" />
-                EN VIVO
+                {tx.liveSignals}
               </div>
-              <h2 className="font-display text-4xl md:text-5xl font-black">Últimas señales</h2>
+              <h2 className="font-display text-4xl md:text-5xl font-black">{tx.latestSignals}</h2>
             </div>
             <Link href="/senales" className="hidden md:flex items-center gap-2 text-[#00ff88] text-sm font-medium hover:underline">
-              Ver todas <ChevronRight className="w-4 h-4" />
+              {tx.viewAll} <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-3">
@@ -226,60 +320,8 @@ export default function Home() {
                 </div>
                 <div className="text-right">
                   <div className={`font-black text-xl ${s.profit > 0 ? 'text-[#00ff88]' : 'text-red-400'}`}>{s.profit > 0 ? '+' : ''}{s.profit}%</div>
-                  <div className={`text-xs font-medium ${s.status === 'win' ? 'text-[#00ff88]/60' : 'text-red-400/60'}`}>{s.status === 'win' ? '✓ GANADA' : '✗ PERDIDA'}</div>
+                  <div className={`text-xs font-medium ${s.status === 'win' ? 'text-[#00ff88]/60' : 'text-red-400/60'}`}>{s.status === 'win' ? '✓ WON' : '✗ LOST'}</div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="relative py-24 bg-[#0a1628]/30">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="badge-tech inline-flex items-center gap-2 mb-4">PRECIOS TRANSPARENTES</div>
-            <h2 className="font-display text-4xl md:text-5xl font-black mt-4">
-              Sin sorpresas, <span className="text-gradient-green">solo resultados</span>
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                name: 'FREE', price: '0€', period: 'para siempre', desc: 'Empieza a operar sin riesgo',
-                features: ['3 señales/semana', 'Canal público de Telegram', 'Análisis semanal', 'Acceso a comunidad'],
-                cta: 'Empezar gratis', highlight: false, href: '/login',
-              },
-              {
-                name: 'VIP', price: '49€', period: '/mes', desc: 'Para traders que quieren maximizar',
-                features: ['Señales ilimitadas', 'Grupo VIP privado', 'Análisis diario', 'Dashboard completo', 'Soporte prioritario'],
-                cta: 'Ser VIP', highlight: true, href: '/login',
-              },
-              {
-                name: 'PERFORMANCE', price: '30%', period: 'solo si ganas >5%', desc: 'Nuestro dinero donde nuestra boca',
-                features: ['Todo lo de VIP', 'Cobramos solo si ganas', 'Gestión de riesgo avanzada', 'Reporting mensual'],
-                cta: 'Contactar', highlight: false, href: '/login',
-              },
-            ].map((plan) => (
-              <div key={plan.name} className={`card-tech rounded-2xl p-8 relative ${plan.highlight ? 'glass-accent glow-green' : 'glass'}`}>
-                {plan.highlight && <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge-tech">MÁS POPULAR</div>}
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">{plan.name}</div>
-                <div className="flex items-end gap-1 mb-1">
-                  <span className="text-5xl font-black font-display">{plan.price}</span>
-                  {plan.price !== '0€' && <span className="text-gray-500 mb-2 text-sm">{plan.period}</span>}
-                </div>
-                <p className="text-sm text-gray-500 mb-8">{plan.desc}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="text-sm text-gray-300 flex items-center gap-3">
-                      <svg className="w-4 h-4 text-[#00ff88] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={plan.href} className={`block text-center py-3.5 rounded-xl font-bold transition ${plan.highlight ? 'bg-[#00ff88] text-[#030712] hover:brightness-110' : 'border border-white/10 hover:border-[#00ff88]/40 text-white'}`}>
-                  {plan.cta}
-                </Link>
               </div>
             ))}
           </div>
@@ -293,11 +335,11 @@ export default function Home() {
             <div className="scan-line" />
             <div className="relative z-10">
               <h2 className="font-display text-4xl md:text-5xl font-black mb-4">
-                Empieza a <span className="text-gradient-green">ganar hoy</span>
+                {tx.openFreeAccount2}
               </h2>
-              <p className="text-gray-400 text-lg mb-10">3 señales gratis/semana. Sin tarjeta. Sin compromiso. Si no ganas, no pagas.</p>
+              <p className="text-gray-400 text-lg mb-10">{tx.onlyWinFee}</p>
               <Link href="/login" className="btn-primary text-lg inline-flex items-center gap-2 animate-pulse-glow">
-                Crear mi cuenta gratis <ArrowRight className="w-5 h-5" />
+                {tx.startFree} <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>
@@ -313,11 +355,10 @@ export default function Home() {
             </div>
             <span className="font-display font-bold text-sm">CryptoSignalsPro</span>
           </div>
-          <p className="text-xs text-gray-600">© 2026 CryptoSignalsPro. Todos los derechos reservados.</p>
+          <p className="text-xs text-gray-600">{tx.allRights}</p>
           <div className="flex gap-6">
-            <Link href="/senales" className="text-xs text-gray-600 hover:text-white transition">Señales</Link>
-            <Link href="/pricing" className="text-xs text-gray-600 hover:text-white transition">Precios</Link>
-            <Link href="/login" className="text-xs text-gray-600 hover:text-white transition">Login</Link>
+            <Link href="/senales" className="text-xs text-gray-600 hover:text-white transition">{tx.signals}</Link>
+            <Link href="/login" className="text-xs text-gray-600 hover:text-white transition">{tx.login}</Link>
           </div>
         </div>
       </footer>
